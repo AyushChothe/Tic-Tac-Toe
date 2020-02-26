@@ -6,12 +6,16 @@
       grid[i] = player;
       player = player == "X" ? "O" : "X";
       setTimeout(() => {
-        check();
+        checkWinner();
+        if (checkTie()) {
+          alert("Gameover: Tie!");
+          reset();
+        }
       }, 1);
     }
   }
 
-  function check() {
+  function checkWinner() {
     const winning = [
       [0, 1, 2],
       [3, 4, 5],
@@ -29,12 +33,26 @@
         grid[cond[1]] == grid[cond[2]] &&
         grid[cond[0]] != ""
       ) {
-        player = "";
-        alert(grid[cond[0]] + " is Winner!");
-        grid = ["", "", "", "", "", "", "", "", ""];
-        player = "X";
+        alert("Gameover: " + grid[cond[0]] + " is Winner!");
+        reset();
       }
     });
+  }
+
+  function checkTie() {
+    let t = true;
+    grid.forEach(e => {
+      if (e == "") {
+        t = false;
+      }
+    });
+    return t;
+  }
+
+  function reset() {
+    player = "";
+    grid = ["", "", "", "", "", "", "", "", ""];
+    player = "X";
   }
 </script>
 
@@ -76,6 +94,10 @@
     margin: 5px;
   }
 </style>
+
+<svelte:head>
+  <title>Tic-Tac-Toe</title>
+</svelte:head>
 
 <main>
   <div>
